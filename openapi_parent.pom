@@ -10,9 +10,9 @@
     <packaging>pom</packaging>
 
     <scm>
-        <connection>scm:git@github.com:clufeng/open_api.git</connection>
-        <developerConnection>scm:git@github.com:clufeng/open_api.git</developerConnection>
-        <url>https://github.com/clufeng/open_api/tree/master</url>
+        <connection>scm:git@github.com:clufeng/open-api.git</connection>
+        <developerConnection>scm:git@github.com:clufeng/open-api.git</developerConnection>
+        <url>https://github.com/clufeng/open-api/tree/master</url>
     </scm>
 
     <modules>
