@@ -15,6 +15,7 @@ module oauth {
 		string state;
 		string forceLogin;
 		string code;
+		string scope;
 		string accessToken;
 	};
 

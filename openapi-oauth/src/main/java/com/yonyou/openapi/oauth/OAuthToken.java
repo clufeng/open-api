@@ -22,15 +22,15 @@ package com.yonyou.openapi.oauth;
 
 public class OAuthToken implements Cloneable, java.io.Serializable
 {
-    public String accessToken;
+    private String accessToken;
 
-    public String tokenType;
+    private String tokenType;
 
-    public int expiresIn;
+    private int expiresIn;
 
-    public String refreshToken;
+    private String refreshToken;
 
-    public String scope;
+    private String scope;
 
     public OAuthToken()
     {
@@ -178,4 +178,44 @@ public class OAuthToken implements Cloneable, java.io.Serializable
     private static final OAuthToken __nullMarshalValue = new OAuthToken();
 
     public static final long serialVersionUID = -1228570592L;
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public String getTokenType() {
+        return tokenType;
+    }
+
+    public void setTokenType(String tokenType) {
+        this.tokenType = tokenType;
+    }
+
+    public int getExpiresIn() {
+        return expiresIn;
+    }
+
+    public void setExpiresIn(int expiresIn) {
+        this.expiresIn = expiresIn;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public String getScope() {
+        return scope;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+    }
 }

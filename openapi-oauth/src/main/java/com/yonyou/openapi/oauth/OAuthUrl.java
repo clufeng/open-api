@@ -46,6 +46,8 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
 
     private String code;
 
+    private String scope;
+
     private String accessToken;
 
     public OAuthUrl()
@@ -62,10 +64,11 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
         state = "";
         forceLogin = "";
         code = "";
+        scope = "";
         accessToken = "";
     }
 
-    public OAuthUrl(String scheme, String host, String method, String uri, String responseType, String grantType, String clientId, String clientSecret, String redirectUri, String state, String forceLogin, String code, String accessToken)
+    public OAuthUrl(String scheme, String host, String method, String uri, String responseType, String grantType, String clientId, String clientSecret, String redirectUri, String state, String forceLogin, String code, String scope, String accessToken)
     {
         this.scheme = scheme;
         this.host = host;
@@ -79,6 +82,7 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
         this.state = state;
         this.forceLogin = forceLogin;
         this.code = code;
+        this.scope = scope;
         this.accessToken = accessToken;
     }
 
@@ -181,6 +185,13 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
                     return false;
                 }
             }
+            if(scope != _r.scope)
+            {
+                if(scope == null || _r.scope == null || !scope.equals(_r.scope))
+                {
+                    return false;
+                }
+            }
             if(accessToken != _r.accessToken)
             {
                 if(accessToken == null || _r.accessToken == null || !accessToken.equals(_r.accessToken))
@@ -212,6 +223,7 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
         __h = IceInternal.HashUtil.hashAdd(__h, state);
         __h = IceInternal.HashUtil.hashAdd(__h, forceLogin);
         __h = IceInternal.HashUtil.hashAdd(__h, code);
+        __h = IceInternal.HashUtil.hashAdd(__h, scope);
         __h = IceInternal.HashUtil.hashAdd(__h, accessToken);
         return __h;
     }
@@ -246,6 +258,7 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
         __os.writeString(state);
         __os.writeString(forceLogin);
         __os.writeString(code);
+        __os.writeString(scope);
         __os.writeString(accessToken);
     }
 
@@ -264,6 +277,7 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
         state = __is.readString();
         forceLogin = __is.readString();
         code = __is.readString();
+        scope = __is.readString();
         accessToken = __is.readString();
     }
 
@@ -293,7 +307,7 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
     
     private static final OAuthUrl __nullMarshalValue = new OAuthUrl();
 
-    public static final long serialVersionUID = -1494503686L;
+    public static final long serialVersionUID = -1060474409L;
 
     public String getScheme() {
         return scheme;
@@ -389,6 +403,14 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getScope() {
+        return scope;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
     }
 
     public String getAccessToken() {
