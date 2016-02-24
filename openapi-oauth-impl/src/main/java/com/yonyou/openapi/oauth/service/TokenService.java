@@ -37,17 +37,17 @@ public class TokenService {
         token.setExpiresIn(EXPIRESIN);
         token.setTokenType(grantType);
 
-        String accessToken =
-                Long.toString(mcc.incr(ACCESS_TOKEN_COUNTER, 1, 0)
-                        + (new Date()).getTime(), 24);
-
-        token.setAccessToken(accessToken);
-
-        if (!mcc.set(ACCESS_TOKEN_PREFIX + token.getAccessToken(),
-                EXPIRESIN, clientId)) {
-            logger.error("创建access_token失败!");
-            return null;
-        }
+//        String accessToken =
+//                Long.toString(mcc.incr(ACCESS_TOKEN_COUNTER, 1, 0)
+//                        + (new Date()).getTime(), 24);
+//
+//        token.setAccessToken(accessToken);
+//
+//        if (!mcc.set(ACCESS_TOKEN_PREFIX + token.getAccessToken(),
+//                EXPIRESIN, clientId)) {
+//            logger.error("创建access_token失败!");
+//            return null;
+//        }
 
         return token;
     }

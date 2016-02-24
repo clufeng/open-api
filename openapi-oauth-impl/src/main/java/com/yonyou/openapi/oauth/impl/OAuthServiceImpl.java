@@ -76,6 +76,10 @@ public class OAuthServiceImpl extends _OAuthServiceDisp {
             throw new OAuthException(OAEC_INVALID_CLIENT_SECRET);
         }
 
+        if(!strategyMap.containsKey(url.getGrantType())) {
+            throw new OAuthException(OAEC_UNSUPPORTED_GRANT_TYPE);
+        }
+
         return strategyMap.get(url.getGrantType()).authorize(url);
 
     }
