@@ -18,6 +18,7 @@
     <modules>
         <module>openapi-oauth</module>
         <module>openapi-oauth-impl</module>
+        <module>openapi-server</module>
     </modules>
 
     <dependencies>
@@ -95,5 +96,17 @@
         <junit.version>4.11</junit.version>
         <log4j2.version>2.5</log4j2.version>
     </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

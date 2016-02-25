@@ -7,8 +7,10 @@ import com.yonyou.openapi.oauth.OAuthUrl;
 import com.yonyou.openapi.oauth._OAuthServiceDisp;
 import com.yonyou.openapi.oauth.model.ClientEntity;
 import com.yonyou.openapi.oauth.service.ClientService;
+import com.yonyou.openapi.oauth.strategy.ClientcredentialsOAuthStrategy;
 import com.yonyou.openapi.oauth.strategy.CodeOAuthStrategy;
 import com.yonyou.openapi.oauth.strategy.IOAuthStrategy;
+import com.yonyou.openapi.oauth.strategy.PasswordOAuthStrategy;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
@@ -28,6 +30,8 @@ public class OAuthServiceImpl extends _OAuthServiceDisp {
     public OAuthServiceImpl() {
         strategyMap = new HashMap<>();
         strategyMap.put("authorization_code", new CodeOAuthStrategy());
+        strategyMap.put("password", new PasswordOAuthStrategy());
+        strategyMap.put("clientcredentials", new ClientcredentialsOAuthStrategy());
     }
 
     public OAuthToken authorize(OAuthUrl url, Current __current) throws OAuthException {

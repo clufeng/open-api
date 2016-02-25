@@ -3,6 +3,7 @@ package com.yonyou.openapi.oauth.strategy;
 import com.yonyou.openapi.oauth.OAuthException;
 import com.yonyou.openapi.oauth.OAuthUrl;
 import com.yonyou.openapi.oauth.service.CodeService;
+import org.apache.commons.lang3.StringUtils;
 
 import static com.yonyou.openapi.oauth.impl.OAuthErrorCode.OAEC_INVALID_CODE;
 import static com.yonyou.openapi.oauth.impl.OAuthErrorCode.OAEC_LACK_CODE;
@@ -17,9 +18,7 @@ public class CodeOAuthStrategy extends AbstractOAuthStrategy {
     @Override
     public void authorize0(OAuthUrl url) throws OAuthException {
 
-        String code = url.getCode();
-
-        if (code == null) {
+        if (StringUtils.isEmpty(url.getCode())) {
             // 缺少code
             throw new OAuthException(OAEC_LACK_CODE);
         }

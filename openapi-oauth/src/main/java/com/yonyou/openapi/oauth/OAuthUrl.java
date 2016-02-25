@@ -50,6 +50,10 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
 
     private String accessToken;
 
+    private String username;
+
+    private String password;
+
     public OAuthUrl()
     {
         scheme = "";
@@ -66,9 +70,11 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
         code = "";
         scope = "";
         accessToken = "";
+        username = "";
+        password = "";
     }
 
-    public OAuthUrl(String scheme, String host, String method, String uri, String responseType, String grantType, String clientId, String clientSecret, String redirectUri, String state, String forceLogin, String code, String scope, String accessToken)
+    public OAuthUrl(String scheme, String host, String method, String uri, String responseType, String grantType, String clientId, String clientSecret, String redirectUri, String state, String forceLogin, String code, String scope, String accessToken, String username, String password)
     {
         this.scheme = scheme;
         this.host = host;
@@ -84,6 +90,8 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
         this.code = code;
         this.scope = scope;
         this.accessToken = accessToken;
+        this.username = username;
+        this.password = password;
     }
 
     public boolean
@@ -199,6 +207,20 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
                     return false;
                 }
             }
+            if(username != _r.username)
+            {
+                if(username == null || _r.username == null || !username.equals(_r.username))
+                {
+                    return false;
+                }
+            }
+            if(password != _r.password)
+            {
+                if(password == null || _r.password == null || !password.equals(_r.password))
+                {
+                    return false;
+                }
+            }
 
             return true;
         }
@@ -225,6 +247,8 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
         __h = IceInternal.HashUtil.hashAdd(__h, code);
         __h = IceInternal.HashUtil.hashAdd(__h, scope);
         __h = IceInternal.HashUtil.hashAdd(__h, accessToken);
+        __h = IceInternal.HashUtil.hashAdd(__h, username);
+        __h = IceInternal.HashUtil.hashAdd(__h, password);
         return __h;
     }
 
@@ -260,6 +284,8 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
         __os.writeString(code);
         __os.writeString(scope);
         __os.writeString(accessToken);
+        __os.writeString(username);
+        __os.writeString(password);
     }
 
     public void
@@ -279,6 +305,8 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
         code = __is.readString();
         scope = __is.readString();
         accessToken = __is.readString();
+        username = __is.readString();
+        password = __is.readString();
     }
 
     static public void
@@ -307,7 +335,7 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
     
     private static final OAuthUrl __nullMarshalValue = new OAuthUrl();
 
-    public static final long serialVersionUID = -1060474409L;
+    public static final long serialVersionUID = -2145559074L;
 
     public String getScheme() {
         return scheme;
@@ -419,5 +447,21 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

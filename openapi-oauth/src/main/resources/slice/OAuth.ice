@@ -17,6 +17,8 @@ module oauth {
 		string code;
 		string scope;
 		string accessToken;
+		string username;
+		string password;
 	};
 
 	struct OAuthToken {
