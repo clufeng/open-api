@@ -11,6 +11,14 @@
     <artifactId>openapi-oauth</artifactId>
     <packaging>jar</packaging>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.mcloud.rpc</groupId>
+            <artifactId>service-framework-client</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <finalName>openapi-oauth</finalName>
         <resources>

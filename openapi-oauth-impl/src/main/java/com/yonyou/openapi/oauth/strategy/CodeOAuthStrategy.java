@@ -24,7 +24,7 @@ public class CodeOAuthStrategy extends AbstractOAuthStrategy {
         }
 
         // 验证授权码
-        if ( codeService.validateCode(url.getClientId(), url.getCode())) {
+        if (!codeService.validateCode(url.getClientId(), url.getCode())) {
             throw new OAuthException(OAEC_INVALID_CODE);
         }
 

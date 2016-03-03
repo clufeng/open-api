@@ -1,5 +1,6 @@
 package com.yonyou.openapi.oauth.service;
 
+import com.yonyou.mcloud.memcached.MemcachedUtils;
 import com.yonyou.openapi.oauth.OAuthToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,17 +38,17 @@ public class TokenService {
         token.setExpiresIn(EXPIRESIN);
         token.setTokenType(grantType);
 
-//        String accessToken =
-//                Long.toString(mcc.incr(ACCESS_TOKEN_COUNTER, 1, 0)
-//                        + (new Date()).getTime(), 24);
-//
-//        token.setAccessToken(accessToken);
-//
-//        if (!mcc.set(ACCESS_TOKEN_PREFIX + token.getAccessToken(),
-//                EXPIRESIN, clientId)) {
-//            logger.error("创建access_token失败!");
-//            return null;
-//        }
+        String accessToken =
+                Long.toString(MemcachedUtils.incr(ACCESS_TOKEN_COUNTER, 1, 0)
+                        + (new Date()).getTime(), 24);
+
+        token.setAccessToken(accessToken);
+
+        if (!MemcachedUtils.set(ACCESS_TOKEN_PREFIX + token.getAccessToken(),
+                clientId, EXPIRESIN)) {
+            logger.error("创建access_token失败!");
+            return null;
+        }
 
         return token;
     }
