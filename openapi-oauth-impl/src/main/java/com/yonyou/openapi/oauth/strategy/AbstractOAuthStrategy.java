@@ -13,6 +13,7 @@ public abstract class AbstractOAuthStrategy implements IOAuthStrategy {
     private TokenService tokenService;
 
     public AbstractOAuthStrategy() {
+        tokenService = new TokenService();
     }
 
     @Override
@@ -25,4 +26,8 @@ public abstract class AbstractOAuthStrategy implements IOAuthStrategy {
     }
 
     public abstract void authorize0(OAuthUrl url) throws OAuthException;
+
+    public TokenService getTokenService() {
+        return tokenService;
+    }
 }

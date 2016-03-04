@@ -54,6 +54,8 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
 
     private String password;
 
+    private String refreshToken;
+
     public OAuthUrl()
     {
         scheme = "";
@@ -72,9 +74,10 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
         accessToken = "";
         username = "";
         password = "";
+        refreshToken = "";
     }
 
-    public OAuthUrl(String scheme, String host, String method, String uri, String responseType, String grantType, String clientId, String clientSecret, String redirectUri, String state, String forceLogin, String code, String scope, String accessToken, String username, String password)
+    public OAuthUrl(String scheme, String host, String method, String uri, String responseType, String grantType, String clientId, String clientSecret, String redirectUri, String state, String forceLogin, String code, String scope, String accessToken, String username, String password, String refreshToken)
     {
         this.scheme = scheme;
         this.host = host;
@@ -92,6 +95,7 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
         this.accessToken = accessToken;
         this.username = username;
         this.password = password;
+        this.refreshToken = refreshToken;
     }
 
     public boolean
@@ -222,6 +226,14 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
                 }
             }
 
+            if(refreshToken != _r.refreshToken)
+            {
+                if(refreshToken == null || _r.refreshToken == null || !refreshToken.equals(_r.refreshToken))
+                {
+                    return false;
+                }
+            }
+
             return true;
         }
 
@@ -249,6 +261,8 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
         __h = IceInternal.HashUtil.hashAdd(__h, accessToken);
         __h = IceInternal.HashUtil.hashAdd(__h, username);
         __h = IceInternal.HashUtil.hashAdd(__h, password);
+        __h = IceInternal.HashUtil.hashAdd(__h, refreshToken);
+
         return __h;
     }
 
@@ -286,6 +300,8 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
         __os.writeString(accessToken);
         __os.writeString(username);
         __os.writeString(password);
+        __os.writeString(refreshToken);
+
     }
 
     public void
@@ -307,6 +323,7 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
         accessToken = __is.readString();
         username = __is.readString();
         password = __is.readString();
+        refreshToken = __is.readString();
     }
 
     static public void
@@ -463,5 +480,13 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }

@@ -143,4 +143,9 @@ public class OAuthErrorCode {
      * 缺少access_token参数
      */
     public static final int OAEC_LACK_ACCESS_TOKEN = 0x2018;
+
+    /**
+     * access_token无效，可能已过期，需要重新授权
+     */
+    public static final int OAEC_INVALID_REFRESH_TOKEN = 0x2019;
 }

@@ -12,7 +12,7 @@ import static com.yonyou.openapi.oauth.impl.OAuthErrorCode.*;
  */
 public class PasswordOAuthStrategy extends AbstractOAuthStrategy {
 
-    private UserService userService;
+    private UserService userService = new UserService();
 
     @Override
     public void authorize0(OAuthUrl url) throws OAuthException {

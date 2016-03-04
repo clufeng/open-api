@@ -7,10 +7,8 @@ import com.yonyou.openapi.oauth.OAuthUrl;
 import com.yonyou.openapi.oauth._OAuthServiceDisp;
 import com.yonyou.openapi.oauth.model.ClientEntity;
 import com.yonyou.openapi.oauth.service.ClientService;
-import com.yonyou.openapi.oauth.strategy.ClientcredentialsOAuthStrategy;
-import com.yonyou.openapi.oauth.strategy.CodeOAuthStrategy;
-import com.yonyou.openapi.oauth.strategy.IOAuthStrategy;
-import com.yonyou.openapi.oauth.strategy.PasswordOAuthStrategy;
+import com.yonyou.openapi.oauth.service.TokenService;
+import com.yonyou.openapi.oauth.strategy.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
@@ -19,6 +17,7 @@ import java.util.Map;
 import static com.yonyou.openapi.oauth.impl.OAuthErrorCode.*;
 
 /**
+ *
  * Created by hubo on 2016/2/23
  */
 public class OAuthServiceImpl extends _OAuthServiceDisp {
@@ -27,11 +26,18 @@ public class OAuthServiceImpl extends _OAuthServiceDisp {
 
     private ClientService clientService;
 
+    private TokenService tokenService;
+
     public OAuthServiceImpl() {
         strategyMap = new HashMap<>();
         strategyMap.put("authorization_code", new CodeOAuthStrategy());
         strategyMap.put("password", new PasswordOAuthStrategy());
         strategyMap.put("clientcredentials", new ClientcredentialsOAuthStrategy());
+        strategyMap.put("refresh_token", new RefreshTokenOAuthStrategy());
+
+        //TODO 用spring容器经行管理
+        clientService = new ClientService();
+        tokenService = new TokenService();
     }
 
     public OAuthToken authorize(OAuthUrl url, Current __current) throws OAuthException {
@@ -46,14 +52,14 @@ public class OAuthServiceImpl extends _OAuthServiceDisp {
             throw new OAuthException(OAEC_MUST_HTTPS_SCHEME);
         }
 
-        // 判断GrantType是否为null
-        if(StringUtils.isEmpty(url.getGrantType())) {
-            throw new OAuthException(OAEC_LACK_PARAM);
-        }
-
         if (!"POST".equals(url.getMethod())) {
             // 必须是POST方法
             throw new OAuthException(OAEC_MUST_POST_METHOD);
+        }
+
+        // 判断GrantType是否为null
+        if(StringUtils.isEmpty(url.getGrantType())) {
+            throw new OAuthException(OAEC_LACK_PARAM);
         }
 
         if (StringUtils.isEmpty(url.getClientId())) {
@@ -89,6 +95,14 @@ public class OAuthServiceImpl extends _OAuthServiceDisp {
     }
 
     public void validateToken(String accessToken, Current __current) throws OAuthException {
+
+        if(StringUtils.isEmpty(accessToken)) {
+            throw new OAuthException(OAEC_LACK_PARAM);
+        }
+
+        if(!tokenService.vaildateToke(accessToken)) {
+            throw new OAuthException(OAEC_INVALID_ACCESS_TOKEN);
+        }
 
     }
 

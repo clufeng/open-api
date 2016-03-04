@@ -17,6 +17,7 @@ module oauth {
 		string code;
 		string scope;
 		string accessToken;
+		string refreshToken;
 		string username;
 		string password;
 	};
