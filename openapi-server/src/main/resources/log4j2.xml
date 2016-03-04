@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="OFF">
+
+    <properties>
+        <property name="basePath">${sys:catalina.home}/logs/mcloud-demo</property>
+    </properties>
+
+    <appenders>
+
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout charset="UTF-8" pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+
+        <RollingFile name="DevLog" fileName="${basePath}/mcloud-demo.log"
+                     filePattern="${basePath}/mcloud-demo.%d{yyyy-MM-dd-HH}.log">
+            <PatternLayout charset="UTF-8" pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread][%file:%line] - %msg%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="6" modulate="true" />
+                <SizeBasedTriggeringPolicy size="50 MB"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="sql" fileName="${basePath}/sql.log"
+                     filePattern="${basePath}/sql.%d{yyyy-MM-dd-HH}.log">
+            <PatternLayout charset="UTF-8" pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} %level - %msg%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="6" modulate="true" />
+                <SizeBasedTriggeringPolicy size="50 MB"/>
+            </Policies>
+        </RollingFile>
+
+    </appenders>
+
+    <loggers>
+
+        <logger name="com.yonyou.mcloud.dao" level="debug">
+            <appender-ref ref="sql"/>
+        </logger>
+
+        <root level="debug">
+            <appender-ref ref="DevLog"/>
+            <appender-ref ref="Console"/>
+        </root>
+
+    </loggers>
+
+
+</configuration>
