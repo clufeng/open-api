@@ -7,6 +7,7 @@ import com.yonyou.openapi.oauth.OAuthUrl;
 import com.yonyou.openapi.oauth._OAuthServiceDisp;
 import com.yonyou.openapi.oauth.model.ClientEntity;
 import com.yonyou.openapi.oauth.service.ClientService;
+import com.yonyou.openapi.oauth.service.CodeService;
 import com.yonyou.openapi.oauth.service.TokenService;
 import com.yonyou.openapi.oauth.strategy.*;
 import org.apache.commons.lang3.StringUtils;
@@ -28,7 +29,7 @@ public class OAuthServiceImpl extends _OAuthServiceDisp {
 
     private TokenService tokenService;
 
-
+    private CodeService codeService;
 
     public OAuthServiceImpl() {
         strategyMap = new HashMap<>();
@@ -40,6 +41,7 @@ public class OAuthServiceImpl extends _OAuthServiceDisp {
         //TODO 用spring容器经行管理
         clientService = new ClientService();
         tokenService = new TokenService();
+        codeService = new CodeService();
     }
 
     public OAuthToken authorize(OAuthUrl url, Current __current) throws OAuthException {
@@ -110,11 +112,42 @@ public class OAuthServiceImpl extends _OAuthServiceDisp {
 
     public String createCode(OAuthUrl url, Current __current) throws OAuthException {
 
+        if(url == null) {
+            throw new OAuthException(OAEC_SYSTEM_ERROR);
+        }
+
+        // 判断是否是加密协议
+        if (!"https".equals(url.getScheme())) {
+            // 必须是加密的协议
+            throw new OAuthException(OAEC_MUST_HTTPS_SCHEME);
+        }
+
+        if (StringUtils.isEmpty(url.getClientId())) {
+            // 缺少client_id
+            throw new OAuthException(OAEC_LACK_CLIEND_ID);
+        }
+
+        ClientEntity clientInfo = clientService.getClientInfo(url.getClientId());
+
+        if (clientInfo == null) {
+            // 无法获取客户端信息
+            throw new OAuthException(OAEC_CANT_GET_CLIENT_INFO);
+        }
+
+        if (StringUtils.isEmpty(url.getRedirectUri())) {
+            // 缺少redirect_uri
+            throw new OAuthException(OAEC_LACK_REDIRECT_URI);
+        }
+
         if(StringUtils.isEmpty(url.getResponseType())) {
             throw new OAuthException(OAEC_LACK_PARAM);
         }
 
-        return null;
+        if(!url.getResponseType().equals("code")) {
+            throw new OAuthException(OAEC_UNSUPPORTED_RESPONSE_TYPE);
+        }
+
+        return codeService.createCode(url.getClientId());
     }
 
 }

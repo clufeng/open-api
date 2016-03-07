@@ -42,8 +42,6 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
 
     private String state;
 
-    private String forceLogin;
-
     private String code;
 
     private String scope;
@@ -68,7 +66,6 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
         clientSecret = "";
         redirectUri = "";
         state = "";
-        forceLogin = "";
         code = "";
         scope = "";
         accessToken = "";
@@ -77,7 +74,7 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
         refreshToken = "";
     }
 
-    public OAuthUrl(String scheme, String host, String method, String uri, String responseType, String grantType, String clientId, String clientSecret, String redirectUri, String state, String forceLogin, String code, String scope, String accessToken, String username, String password, String refreshToken)
+    public OAuthUrl(String scheme, String host, String method, String uri, String responseType, String grantType, String clientId, String clientSecret, String redirectUri, String state, String code, String scope, String accessToken, String username, String password, String refreshToken)
     {
         this.scheme = scheme;
         this.host = host;
@@ -89,7 +86,6 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
         this.clientSecret = clientSecret;
         this.redirectUri = redirectUri;
         this.state = state;
-        this.forceLogin = forceLogin;
         this.code = code;
         this.scope = scope;
         this.accessToken = accessToken;
@@ -183,13 +179,6 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
                     return false;
                 }
             }
-            if(forceLogin != _r.forceLogin)
-            {
-                if(forceLogin == null || _r.forceLogin == null || !forceLogin.equals(_r.forceLogin))
-                {
-                    return false;
-                }
-            }
             if(code != _r.code)
             {
                 if(code == null || _r.code == null || !code.equals(_r.code))
@@ -255,7 +244,6 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
         __h = IceInternal.HashUtil.hashAdd(__h, clientSecret);
         __h = IceInternal.HashUtil.hashAdd(__h, redirectUri);
         __h = IceInternal.HashUtil.hashAdd(__h, state);
-        __h = IceInternal.HashUtil.hashAdd(__h, forceLogin);
         __h = IceInternal.HashUtil.hashAdd(__h, code);
         __h = IceInternal.HashUtil.hashAdd(__h, scope);
         __h = IceInternal.HashUtil.hashAdd(__h, accessToken);
@@ -294,7 +282,6 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
         __os.writeString(clientSecret);
         __os.writeString(redirectUri);
         __os.writeString(state);
-        __os.writeString(forceLogin);
         __os.writeString(code);
         __os.writeString(scope);
         __os.writeString(accessToken);
@@ -317,7 +304,6 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
         clientSecret = __is.readString();
         redirectUri = __is.readString();
         state = __is.readString();
-        forceLogin = __is.readString();
         code = __is.readString();
         scope = __is.readString();
         accessToken = __is.readString();
@@ -432,14 +418,6 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
 
     public void setState(String state) {
         this.state = state;
-    }
-
-    public String getForceLogin() {
-        return forceLogin;
-    }
-
-    public void setForceLogin(String forceLogin) {
-        this.forceLogin = forceLogin;
     }
 
     public String getCode() {

@@ -13,7 +13,7 @@ import static com.yonyou.openapi.oauth.impl.OAuthErrorCode.OAEC_LACK_CODE;
  */
 public class CodeOAuthStrategy extends AbstractOAuthStrategy {
 
-    private CodeService codeService;
+    private CodeService codeService = new CodeService();
 
     @Override
     public void authorize0(OAuthUrl url) throws OAuthException {
