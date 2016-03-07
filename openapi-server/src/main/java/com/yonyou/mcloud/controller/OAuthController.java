@@ -1,6 +1,7 @@
 package com.yonyou.mcloud.controller;
 
 import com.yonyou.mcloud.Locator;
+import com.yonyou.mcloud.pojo.OAuthTokenJson;
 import com.yonyou.openapi.oauth.OAuthException;
 import com.yonyou.openapi.oauth.OAuthServicePrx;
 import com.yonyou.openapi.oauth.OAuthToken;
@@ -21,11 +22,15 @@ import javax.servlet.http.HttpServletRequest;
 public class OAuthController extends BasicController {
 
     @RequestMapping(value = "/access_token", method = RequestMethod.POST)
-    public Object applyTokey(
+    public Object applyToken(
             @RequestParam(value = "client_id", required = true) String clientId,
             @RequestParam(value = "client_secret", required = true) String clientSecret,
             @RequestParam(value = "grant_type", required = true) String grantType,
             @RequestParam(value = "scope", required = false) String scope,
+            @RequestParam(value = "refresh_token", required = false) String refreshToken,
+            @RequestParam(value = "username", required = false) String username,
+            @RequestParam(value = "password", required = false) String password,
+
             HttpServletRequest request) {
 
         OAuthServicePrx oAuthService = Locator.lookup(OAuthServicePrx.class);
@@ -35,13 +40,17 @@ public class OAuthController extends BasicController {
         url.setClientId(clientId);
         url.setClientSecret(clientSecret);
         url.setGrantType(grantType);
+        url.setRefreshToken(refreshToken);
+        url.setUsername(username);
+        url.setPassword(password);
+        url.setScope(scope);
         OAuthToken token;
         try {
             token = oAuthService.authorize(url);
         } catch (OAuthException e) {
             return error(String.valueOf(e.code));
         }
-        return success(token);
+        return success(new OAuthTokenJson(token));
 
     }
 
