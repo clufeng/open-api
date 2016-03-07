@@ -34,6 +34,7 @@ public class OAuthController extends BasicController {
             @RequestParam(value = "username", required = false) String username,
             @RequestParam(value = "password", required = false) String password,
             @RequestParam(value = "code", required = false) String code,
+            @RequestParam(value = "redirect_uri", required = false) String redirectUri,
             HttpServletRequest request) {
 
         OAuthServicePrx oAuthService = Locator.lookup(OAuthServicePrx.class);
@@ -48,6 +49,7 @@ public class OAuthController extends BasicController {
         url.setPassword(password);
         url.setScope(scope);
         url.setCode(code);
+        url.setRedirectUri(redirectUri);
         OAuthToken token;
         try {
             token = oAuthService.authorize(url);

@@ -147,7 +147,7 @@ public class OAuthServiceImpl extends _OAuthServiceDisp {
             throw new OAuthException(OAEC_UNSUPPORTED_RESPONSE_TYPE);
         }
 
-        return codeService.createCode(url.getClientId());
+        return codeService.createCode(url.getClientId(), url.getRedirectUri());
     }
 
 }

@@ -2,13 +2,14 @@ package com.yonyou.openapi.oauth.service;
 
 import com.yonyou.mcloud.memcached.MemcachedUtils;
 import com.yonyou.openapi.oauth.OAuthException;
+import com.yonyou.openapi.oauth.model.ClientIdAndRedirectUriPair;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 
-import static com.yonyou.openapi.oauth.impl.OAuthErrorCode.OAEC_LACK_PARAM;
+import static com.yonyou.openapi.oauth.impl.OAuthErrorCode.*;
 
 /**
  * Created by hubo on 2016/2/24
@@ -39,33 +40,39 @@ public class CodeService {
      * @param code 传进来的code码
      * @return 是否正确
      */
-    public boolean validateCode(String clientId, String code) throws OAuthException{
+    public void validateCode(String clientId, String code, String redirectUri) throws OAuthException{
 
-        if(StringUtils.isEmpty(clientId) || StringUtils.isEmpty(code)) {
+        if(StringUtils.isEmpty(clientId) || StringUtils.isEmpty(code) || StringUtils.isEmpty(redirectUri)) {
             throw new OAuthException(OAEC_LACK_PARAM);
         }
 
-        String saveClientId = MemcachedUtils.get(CODE_PREFIX + code);
+        ClientIdAndRedirectUriPair pair = MemcachedUtils.get(CODE_PREFIX + code);
 
-        if(StringUtils.isEmpty(saveClientId) || !saveClientId.equals(clientId)) {
-            return false;
+        if(pair == null) {
+            throw new OAuthException(OAEC_INVALID_CODE);
+        }
+
+        if(!pair.getClientId().equals(clientId)) {
+            throw new OAuthException(OAEC_GRANT_TYPE_MISMATCH);
+        }
+
+        if(!pair.getRedirectUri().equals(redirectUri)) {
+            throw new OAuthException(OAEC_REDIRECT_URI_MISMATCH);
         }
 
         MemcachedUtils.remove(CODE_PREFIX + code);
-
-        return true;
     }
 
-    public String createCode(String clientId) throws OAuthException {
+    public String createCode(String clientId, String redirectUri) throws OAuthException {
 
-        if(StringUtils.isEmpty(clientId)) {
+        if(StringUtils.isEmpty(clientId) || StringUtils.isEmpty(redirectUri)) {
             throw new OAuthException(OAEC_LACK_PARAM);
         }
 
         String code = Long.toString(
                 MemcachedUtils.incr(CODE_COUNTER, 1, 0) + (new Date()).getTime(), 24);
 
-        if (!MemcachedUtils.set(CODE_PREFIX + code, clientId, CODE_EXPIRE_IN)) {
+        if (!MemcachedUtils.set(CODE_PREFIX + code, new ClientIdAndRedirectUriPair(clientId, redirectUri), CODE_EXPIRE_IN)) {
             return null;
         }
 

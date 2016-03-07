@@ -5,7 +5,6 @@ import com.yonyou.openapi.oauth.OAuthUrl;
 import com.yonyou.openapi.oauth.service.CodeService;
 import org.apache.commons.lang3.StringUtils;
 
-import static com.yonyou.openapi.oauth.impl.OAuthErrorCode.OAEC_INVALID_CODE;
 import static com.yonyou.openapi.oauth.impl.OAuthErrorCode.OAEC_LACK_CODE;
 
 /**
@@ -24,9 +23,6 @@ public class CodeOAuthStrategy extends AbstractOAuthStrategy {
         }
 
         // 验证授权码
-        if (!codeService.validateCode(url.getClientId(), url.getCode())) {
-            throw new OAuthException(OAEC_INVALID_CODE);
-        }
-
+        codeService.validateCode(url.getClientId(), url.getCode(), url.getRedirectUri());
     }
 }
