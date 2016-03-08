@@ -37,7 +37,7 @@
             <mvc:exclude-mapping path="/login"/>
             <mvc:exclude-mapping path="/img/validate_code"/>
             <mvc:exclude-mapping path="/static/**"/>
-            <bean class="Interceptor"/>
+            <bean class="com.yonyou.mcloud.interceptors.RequestCountInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
     -->
