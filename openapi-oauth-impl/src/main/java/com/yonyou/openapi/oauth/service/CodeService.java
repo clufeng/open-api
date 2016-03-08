@@ -6,6 +6,7 @@ import com.yonyou.openapi.oauth.model.ClientIdAndRedirectUriPair;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
@@ -14,6 +15,7 @@ import static com.yonyou.openapi.oauth.impl.OAuthErrorCode.*;
 /**
  * Created by hubo on 2016/2/24
  */
+@Service
 public class CodeService {
 
     private static final Logger logger =

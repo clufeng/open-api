@@ -467,4 +467,26 @@ public class OAuthUrl implements Cloneable, java.io.Serializable
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
+
+    @Override
+    public String toString() {
+        return "OAuthUrl{" +
+                "scheme='" + scheme + '\'' +
+                ", host='" + host + '\'' +
+                ", method='" + method + '\'' +
+                ", uri='" + uri + '\'' +
+                ", responseType='" + responseType + '\'' +
+                ", grantType='" + grantType + '\'' +
+                ", clientId='" + clientId + '\'' +
+                ", clientSecret='" + clientSecret + '\'' +
+                ", redirectUri='" + redirectUri + '\'' +
+                ", state='" + state + '\'' +
+                ", code='" + code + '\'' +
+                ", scope='" + scope + '\'' +
+                ", accessToken='" + accessToken + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", refreshToken='" + refreshToken + '\'' +
+                '}';
+    }
 }

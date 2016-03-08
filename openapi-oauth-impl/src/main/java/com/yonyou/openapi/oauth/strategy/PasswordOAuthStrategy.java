@@ -4,15 +4,19 @@ import com.yonyou.openapi.oauth.OAuthException;
 import com.yonyou.openapi.oauth.OAuthUrl;
 import com.yonyou.openapi.oauth.service.UserService;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import static com.yonyou.openapi.oauth.impl.OAuthErrorCode.*;
 
 /**
  * Created by hubo on 2016/2/24
  */
+@Component("PasswordOAuthStrategy")
 public class PasswordOAuthStrategy extends AbstractOAuthStrategy {
 
-    private UserService userService = new UserService();
+    @Autowired
+    private UserService userService;
 
     @Override
     public void authorize0(OAuthUrl url) throws OAuthException {

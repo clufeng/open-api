@@ -9,11 +9,15 @@ import com.yonyou.openapi.oauth.model.ClientEntity;
 import com.yonyou.openapi.oauth.service.ClientService;
 import com.yonyou.openapi.oauth.service.CodeService;
 import com.yonyou.openapi.oauth.service.TokenService;
-import com.yonyou.openapi.oauth.strategy.*;
+import com.yonyou.openapi.oauth.strategy.IOAuthStrategy;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
-import java.util.Map;
 
 import static com.yonyou.openapi.oauth.impl.OAuthErrorCode.*;
 
@@ -21,28 +25,20 @@ import static com.yonyou.openapi.oauth.impl.OAuthErrorCode.*;
  *
  * Created by hubo on 2016/2/23
  */
+@Component("OAuthServiceImpl")
 public class OAuthServiceImpl extends _OAuthServiceDisp {
 
-    private final Map<String, IOAuthStrategy> strategyMap;
+    private static Logger logger = LoggerFactory.getLogger(OAuthServiceImpl.class);
 
+    @Resource(name = "oauthStrategyMap")
+    protected HashMap<String, IOAuthStrategy> strategyMap;
+
+    @Autowired
     private ClientService clientService;
-
+    @Autowired
     private TokenService tokenService;
-
+    @Autowired
     private CodeService codeService;
-
-    public OAuthServiceImpl() {
-        strategyMap = new HashMap<>();
-        strategyMap.put("authorization_code", new CodeOAuthStrategy());
-        strategyMap.put("password", new PasswordOAuthStrategy());
-        strategyMap.put("clientcredentials", new ClientcredentialsOAuthStrategy());
-        strategyMap.put("refresh_token", new RefreshTokenOAuthStrategy());
-
-        //TODO 用spring容器经行管理
-        clientService = new ClientService();
-        tokenService = new TokenService();
-        codeService = new CodeService();
-    }
 
     public OAuthToken authorize(OAuthUrl url, Current __current) throws OAuthException {
 
@@ -94,6 +90,8 @@ public class OAuthServiceImpl extends _OAuthServiceDisp {
             throw new OAuthException(OAEC_UNSUPPORTED_GRANT_TYPE);
         }
 
+        logger.info("authorize : {}", url);
+
         return strategyMap.get(url.getGrantType()).authorize(url);
 
     }
@@ -107,6 +105,8 @@ public class OAuthServiceImpl extends _OAuthServiceDisp {
         if(!tokenService.vaildateToke(accessToken)) {
             throw new OAuthException(OAEC_INVALID_ACCESS_TOKEN);
         }
+
+        logger.info("validateToken success : token[{}]", accessToken);
 
     }
 
@@ -146,6 +146,8 @@ public class OAuthServiceImpl extends _OAuthServiceDisp {
         if(!url.getResponseType().equals("code")) {
             throw new OAuthException(OAEC_UNSUPPORTED_RESPONSE_TYPE);
         }
+
+        logger.info("createCode : {}", url);
 
         return codeService.createCode(url.getClientId(), url.getRedirectUri());
     }
